@@ -47,10 +47,10 @@ class TransactionView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         transaction = Transaction(type=data['type'], amount=data['amount'])
-        try:
-            account.make_transaction(transaction)
-        except NegativeTransactionException as e:
-            return HttpResponse('Cannot have negative balance', status=status.HTTP_400_BAD_REQUEST)
-        except:
-            return HttpResponse('Invalid input', status=status.HTTP_400_BAD_REQUEST)
+        # try:
+        account.make_transaction(transaction)
+        # except NegativeTransactionException:
+        #     return HttpResponse('Cannot have negative balance', status=status.HTTP_400_BAD_REQUEST)
+        # except:
+        #     return HttpResponse('Invalid input', status=status.HTTP_400_BAD_REQUEST)
         return JsonResponse(self.build_transaction_json(transaction), status=status.HTTP_200_OK)
