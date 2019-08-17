@@ -53,7 +53,7 @@ ROOT_URLCONF = 'financial.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['financial/financial/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

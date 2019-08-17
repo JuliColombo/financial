@@ -1,6 +1,7 @@
 import json
 
 from rest_framework import status
+from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import View
 from financial.models import Account, Transaction, NegativeTransactionException
@@ -28,12 +29,12 @@ class TransactionView(View):
             return HttpResponse('Transaction not found', status=status.HTTP_404_NOT_FOUND)
         return JsonResponse(self.build_transaction_json(found_transaction), status=status.HTTP_200_OK)
 
-    def get_all(self):
+    def get_all(self, request):
         try:
             transactions = []
             for transaction in account.transactions:
                 transactions.append(self.build_transaction_json(transaction))
-            return JsonResponse(transactions, status=status.HTTP_200_OK, safe=False)
+            return render(request, 'index.html', {'transactions': transactions})
         except:
             return HttpResponse('Invalid status value', status=status.HTTP_400_BAD_REQUEST)
 
@@ -41,7 +42,7 @@ class TransactionView(View):
         id = kwargs.get('id')
         if id:
             return self.get_by_id(id)
-        return self.get_all()
+        return self.get_all(request)
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
