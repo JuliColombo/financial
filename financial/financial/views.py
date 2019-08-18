@@ -32,14 +32,13 @@ class TransactionView(View):
         return JsonResponse(self.build_transaction_json(found_transaction), status=status.HTTP_200_OK)
 
     def get_all(self, request):
-        # try:
-        transactions = []
-        for transaction in account.transactions:
-            transactions.append(self.build_transaction_json(transaction))
-        return render(request, 'index.html', {'transactions': transactions})
-        # except Exception as e:
-        #     print(e)
-        #     return HttpResponse('Invalid status value', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            transactions = []
+            for transaction in account.transactions:
+                transactions.append(self.build_transaction_json(transaction))
+            return render(request, 'index.html', {'transactions': transactions})
+        except Exception:
+            return HttpResponse('Invalid status value', status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
