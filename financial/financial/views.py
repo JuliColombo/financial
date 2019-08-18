@@ -1,10 +1,12 @@
 import json
+import os
 
 from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import View
 from financial.models import Account, Transaction, NegativeTransactionException
+
 
 account = Account()
 
@@ -30,13 +32,14 @@ class TransactionView(View):
         return JsonResponse(self.build_transaction_json(found_transaction), status=status.HTTP_200_OK)
 
     def get_all(self, request):
-        try:
-            transactions = []
-            for transaction in account.transactions:
-                transactions.append(self.build_transaction_json(transaction))
-            return render(request, 'index.html', {'transactions': transactions})
-        except:
-            return HttpResponse('Invalid status value', status=status.HTTP_400_BAD_REQUEST)
+        # try:
+        transactions = []
+        for transaction in account.transactions:
+            transactions.append(self.build_transaction_json(transaction))
+        return render(request, 'index.html', {'transactions': transactions})
+        # except Exception as e:
+        #     print(e)
+        #     return HttpResponse('Invalid status value', status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
@@ -47,10 +50,10 @@ class TransactionView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         transaction = Transaction(type=data['type'], amount=data['amount'])
-        # try:
-        account.make_transaction(transaction)
-        # except NegativeTransactionException:
-        #     return HttpResponse('Cannot have negative balance', status=status.HTTP_400_BAD_REQUEST)
-        # except:
-        #     return HttpResponse('Invalid input', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            account.make_transaction(transaction)
+        except NegativeTransactionException:
+            return HttpResponse('Cannot have negative balance', status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return HttpResponse('Invalid input', status=status.HTTP_400_BAD_REQUEST)
         return JsonResponse(self.build_transaction_json(transaction), status=status.HTTP_200_OK)

@@ -49,11 +49,11 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'financial.urls'
-
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['financial/financial/templates'],
+        'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
