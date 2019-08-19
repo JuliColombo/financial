@@ -50,4 +50,4 @@ See all credits (green) and debits (red) from account.
 **GET**
 **http://localhost:8000/history/**
 
-![Screenshot](history.png)
+![Alt text](https://github.com/JuliColombo/financial/blob/master/History.png)
