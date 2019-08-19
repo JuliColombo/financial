@@ -28,7 +28,7 @@ def transactions():
 class BalanceView(View):
 
     def get(self, request, *args, **kwargs):
-        return HttpResponse('Balance: ' + str(account.get_balance()))
+        return JsonResponse({'amount': account.get_balance()}, status=status.HTTP_200_OK)
 
 
 class TransactionView(View):

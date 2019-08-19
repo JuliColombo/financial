@@ -9,27 +9,34 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <div class="accordion" id="accordionExample">
-    {% for transaction in transactions %}
-        <div class="card">
-            <div class="card-header {% if transaction.type == 'credit' %} credit {% else %} debit {% endif %}" id="heading{{transaction.id}}">
-                <h2 class="mb-0">
-                    <button class="btn btn-link" style="font-size: large; color: black;" type="button" data-toggle="collapse"
-                            data-target="#collapse{{transaction.id}}" aria-expanded="false"
-                            aria-controls="collapse{{transaction.id}}">
-                        {{transaction.type}} - {{transaction.amount}}
-                    </button>
-                </h2>
-            </div>
+    {% if not transactions %}
+        <div>
+            No transactions were made yet.
+        </div>
+    {% else %}
+        <h1>Transactions</h1>
+        {% for transaction in transactions %}
+            <div class="card">
+                <div class="card-header {% if transaction.type == 'credit' %} credit {% else %} debit {% endif %}" id="heading{{transaction.id}}">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" style="font-size: large; color: black;" type="button" data-toggle="collapse"
+                                data-target="#collapse{{transaction.id}}" aria-expanded="false"
+                                aria-controls="collapse{{transaction.id}}">
+                            {{transaction.type.capitalize}} - $ {{transaction.amount}}
+                        </button>
+                    </h2>
+                </div>
 
-            <div id="collapse{{transaction.id}}" class="collapse" data-parent="#heading{{transaction.id}}">
-                <div class="card-body">
-                    <p>ID: {{ transaction.id }}</p>
-                    <p>Amount: {{ transaction.amount }}</p>
-                    <p>Effective date: {{ transaction.effectiveDate }}</p>
+                <div id="collapse{{transaction.id}}" class="collapse" data-parent="#heading{{transaction.id}}">
+                    <div class="card-body">
+                        <p>ID: {{ transaction.id }}</p>
+                        <p>Amount: $ {{ transaction.amount }}</p>
+                        <p>Effective date: {{ transaction.effectiveDate }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    {% endif %}
 </div>
 
 <style>
